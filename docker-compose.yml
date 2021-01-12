@@ -1,15 +1,21 @@
 version: '3.3'
 services:
-  memcached:
-    container_name: memcached
-    image: memcached:1.6.6
   vpc:
     container_name: vpc
     build:
       context: ./
       dockerfile: .docker/vpc/Dockerfile
+    ports:
+      - "9000:80"
+  memcached:
+    container_name: memcached
+    network_mode: service:vpc
+    depends_on:
+      - vpc
+    image: memcached:1.6.6
   noembed:
     container_name: noembed
+    network_mode: service:vpc
     depends_on:
       - memcached
     build:
@@ -18,9 +24,8 @@ services:
       - ./lib:/usr/src/myapp/lib:delegated
   nginx:
     image: nginx:1.19
+    network_mode: service:vpc
     volumes:
       - ./.docker/nginx/templates:/etc/nginx/templates
     depends_on:
       - noembed
-    ports:
-      - "8080:80"
