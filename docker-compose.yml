@@ -1,0 +1,20 @@
+version: '3.3'
+services:
+  memcached:
+    container_name: memcached
+    image: memcached:1.6.6
+  vpc:
+    container_name: vpc
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.vpc
+  noembed:
+    container_name: noembed
+    depends_on:
+      - memcached
+    build:
+      context: ./
+    volumes:
+      - ./lib:/usr/src/myapp/lib:delegated
+    ports:
+      - 8080:8080
