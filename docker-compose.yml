@@ -7,7 +7,7 @@ services:
     container_name: vpc
     build:
       context: ./
-      dockerfile: ./Dockerfile.vpc
+      dockerfile: .docker/vpc/Dockerfile
   noembed:
     container_name: noembed
     depends_on:
@@ -16,5 +16,11 @@ services:
       context: ./
     volumes:
       - ./lib:/usr/src/myapp/lib:delegated
+  nginx:
+    image: nginx:1.19
+    volumes:
+      - ./.docker/nginx/templates:/etc/nginx/templates
+    depends_on:
+      - noembed
     ports:
-      - 8080:8080
+      - "8080:80"
