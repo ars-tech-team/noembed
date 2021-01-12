@@ -6,7 +6,7 @@ services:
       context: ./
       dockerfile: .docker/vpc/Dockerfile
     ports:
-      - "9000:80"
+      - "8080:80"
   memcached:
     container_name: memcached
     network_mode: service:vpc
