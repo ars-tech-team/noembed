@@ -11,8 +11,8 @@ server {
     access_log off;
 
     add_header access-control-allow-headers "Origin, Accept, Content-Type";
-    add_header access-control-allow-methods: "GET";
-    add_header access-control-allow-origin: "*";
+    add_header access-control-allow-methods "GET";
+    add_header access-control-allow-origin "*";
     
     location / {
         proxy_set_header Host $http_host;
