@@ -1,30 +1,31 @@
 version: '3.3'
 services:
-  vpc:
-    container_name: vpc
+  tini: # allows signal forwarding so all containers using it as the network mode can hit eachother at localhost
+    container_name: tini
     build:
       context: ./
-      dockerfile: .docker/vpc/Dockerfile
+      dockerfile: .docker/tini/Dockerfile
     ports:
-      - "8080:80"
+      - "${HTTP_PORT:-8080}:80"
   memcached:
     container_name: memcached
-    network_mode: service:vpc
+    network_mode: service:tini
     depends_on:
-      - vpc
+      - tini
     image: memcached:1.6.6
   noembed:
     container_name: noembed
-    network_mode: service:vpc
+    network_mode: service:tini
     depends_on:
       - memcached
     build:
       context: ./
+      dockerfile: .docker/noembed/Dockerfile
     volumes:
       - ./lib:/usr/src/myapp/lib:delegated
   nginx:
     image: nginx:1.19
-    network_mode: service:vpc
+    network_mode: service:tini
     volumes:
       - ./.docker/nginx/templates:/etc/nginx/templates
     depends_on:

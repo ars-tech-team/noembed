@@ -1,2 +1,6 @@
 .docker/
-Dockerfile
+.gitignore
+.travis.yml
+docker-compose.yml
+docker-compose.override.yml
+readme.md

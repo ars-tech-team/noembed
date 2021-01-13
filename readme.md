@@ -4,12 +4,14 @@
 
 ## Development
 
+__Note:__ it will take a while to build with all of the perl module dependencies.
+
 ```sh
-$ docker build -t noembed .
+$ docker-compose build
 ```
 
 ```sh
-$ docker run --name=noembed -it --rm -p 8080:8080 -v $(pwd)/lib:/usr/src/myapp/lib noembed
+$ docker-compose up
 ```
 
 Service should now be available at [http://localhost:8080](http://localhost:8080).
